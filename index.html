@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+    crossorigin="anonymous"></script>
+    <script src="app.js" charset="utf-8"></script>
+    <style media="screen">
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      body, html {
+        font-family: Helvetica, Arial, sans-serif;
+      }
+      .main {
+        margin: 15px;
+      }
+      .main h1 {
+        margin-bottom: 4px;
+      }
+      .main p {
+        margin-top: 4px;
+      }
+      .main #list {
+        display: block;
+        width: 250px;
+        height: 450px;
+        border-bottom: 1px solid grey;
+        border-top: 1px solid grey;
+        padding-bottom: 5px;
+        padding-left: 5px;
+        margin: 10px 0px;
+        overflow-y: auto;
+        line-height: 25px;
+      }
+      .chooseOrder {
+        margin: 0 0 5px 0;
+      }
+      input {
+        padding: 4px 8px;
+        border: 1px solid grey;
+        border-radius: 4px;
+        outline: none;
+      }
+      input:focus {
+        box-shadow: 0 0 0 1.5px #c9e9f6;
+      }
+      #search_button {
+        background: #45b3e0;
+        cursor: pointer;
+        color: #FFFFFF;
+      }
+      #search_button:hover {
+        background: #87ceeb;
+      }
+      #search_button:active {
+        box-shadow: 0 0 0 2px #c9e9f6;
+      }
+      #orderBy {
+        margin-top: 5px;
+      }
+      #find_name {
+        margin-bottom: 15px;
+        width: 195px;
+      }
+      #contact {
+        float: right;
+        right: 0;
+        bottom: 0;
+        font-size: .8em;
+      }
+      #contact a {
+        text-decoration: none;
+      }
+      @media only screen and (max-width: 678px) {
+        .main #list {
+          width: auto;
+          margin: 10px auto;
+        }
+      }
+    </style>
+    <title>Name App</title>
+  </head>
+  <body>
+    <div class="main">
+      <h1>Name Application</h1>
+      <hr style="margin-bottom: 15px;">
+      <div>
+        <label for="find_name">Search</label>
+        <br>
+        <input type="text" id="find_name" name="find_name" placeholder="See who is on the list..." autocomplete="off">
+      </div>
+      <div class="chooseOrder">
+        <label for="sort">Order by</label>
+        <br>
+        <input list="listOrder" id="orderBy" name="sort" placeholder="Select" autocomplete="off" onchange="changeOrder(this)">
+        <datalist id="listOrder">
+          <option value="Amount">Most popular first</option>
+          <option value="Alphabet">Alphabetical order</option>
+          <option value=" "></option>
+        </datalist>
+      </div>
+      <!-- This is where the list of names is displayed -->
+      <ul id="list"></ul>
+      <!-- Display total amount of names -->
+      <p id="totalNames">Total names: </p>
+      <p id="differentNames">Different names: </p>
+      <p id="contact"><a href="mailto:johannesmensalo@gmail.com?subject=NameApp">Developer Johannes Mensalo</a>
+      </p>
+    </div>
+  </body>
+</html>
