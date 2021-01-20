@@ -9,7 +9,7 @@
 
 
 
-// Get names.json file from url.
+// Get names.json file from url using jQuery function getJSON.
 function getNameList(callback) {
   $.getJSON('https://raw.githubusercontent.com/solita/dev-academy-2021/main/names.json', function (json) {
       callback(json);
