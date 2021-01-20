@@ -1,0 +1,76 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+body, html {
+  background: #F7F7F7;
+  font-family: Helvetica, Arial, sans-serif;
+}
+.main {
+  margin: 15px;
+}
+.main h1 {
+  margin-bottom: 4px;
+  color: #FF7F50;
+}
+.main h1 span {
+  color: #000;
+}
+.main p {
+  margin-top: 4px;
+}
+.main #list {
+  background: #FFFFFF;
+  display: block;
+  width: 250px;
+  height: 450px;
+  border-bottom: 1px solid grey;
+  border-top: 1px solid grey;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  margin: 10px 0px;
+  overflow-y: auto;
+  line-height: 25px;
+}
+.chooseOrder {
+  margin: 0 0 5px 0;
+}
+input, #listOrder {
+  padding: 4px 8px;
+  border: 1px solid grey;
+  border-radius: 4px;
+  outline: none;
+}
+input, #listOrder:focus {
+  box-shadow: 0 0 0 1.5px #c9e9f6;
+}
+#search_button {
+  background: #45b3e0;
+  cursor: pointer;
+  color: #FFFFFF;
+}
+#search_button:hover {
+  background: #87ceeb;
+}
+#search_button:active {
+  box-shadow: 0 0 0 2px #c9e9f6;
+}
+#find_name {
+  margin-bottom: 15px;
+  width: 195px;
+}
+#contact {
+  float: right;
+  right: 0;
+  bottom: 0;
+  font-size: .8em;
+}
+#contact a {
+  text-decoration: none;
+}
+@media only screen and (max-width: 678px) {
+  .main #list {
+    width: auto;
+    margin: 10px auto;
+  }
+}

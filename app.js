@@ -1,18 +1,36 @@
+// Copyright Johannes Mensalo 2021
+// Credits: Johannes Mensalo
+// Version 1.0.1
 
+
+// This is a Solita Dev Academy 2021 code exercise solution for Name Application.
+// Please check README for complete assignment.
+// And most important, have fun!
+
+
+
+// Get names.json file from url.
 function getNameList(callback) {
   $.getJSON('https://raw.githubusercontent.com/solita/dev-academy-2021/main/names.json', function (json) {
       callback(json);
   });
 }
+// Function where we add the data to HTML element and return it.
+// Function parameters are for wanted array and different index values.
+function addToMainList(array,i,i2,i3) {
+  return document.getElementById('list').innerHTML += "<li>" + array[i][i3] + ": " +
+  array[i][i2] + "</li>";
+}
 
-// Show this in list when reloaded.
+// Show this in list as a default when page is loaded.
 getNameList(function(data) {
   for (var i = 0; i < data['names'].length; i++) {
-    document.getElementById('list').innerHTML += "<li>" + data['names'][i]['name'] + ": " +
-    data['names'][i]['amount'] + "</li>";
+    addToMainList(data['names'],i,['amount'],['name']);
   }
 
-  // Execute real time search function
+  // REQUIREMENT #4
+  // Execute real time search function. For now it only shows result when the name
+  // is fully written in the search bar. Using keyup event listener to detect user input.
   var findName = document.getElementById("find_name");
   findName.addEventListener("keyup", function() {
     document.getElementById('list').innerHTML = '';
@@ -24,30 +42,30 @@ getNameList(function(data) {
       for (var i = 0; i < data['names'].length; i++) {
         onlyName.push(data['names'][i]['name']);
       }
-
       // Check if search bar is empty
       if (searchToUpperCase == '') {
         for (var i = 0; i < data['names'].length; i++) {
-          document.getElementById('list').innerHTML += "<li>" + data['names'][i]['name'] + ": " +
-          data['names'][i]['amount'] + "</li>";
+          addToMainList(data['names'],i,['amount'],['name']);
         }
       } else {
         // Insert result to name list
         if (onlyName.indexOf(searchToUpperCase) == -1) {
-          document.getElementById('list').innerHTML = "No result <br>";
+          document.getElementById('list').innerHTML = "<h3 style='text-align: center; margin-top: 10px;'>Sorry, we could not find this guy! </h3><br>";
         } else {
           const indexOfSearch = onlyName.indexOf(searchToUpperCase);
-          document.getElementById('list').innerHTML = "<li>" + data['names'][indexOfSearch]['name'] + ": " +
-          data['names'][indexOfSearch]['amount'] + "</li>";
+          addToMainList(data['names'],indexOfSearch,['amount'],['name']);
         }
       }
     }
   });
-
-
 });
 
-// Change order of names.
+// REQUIREMENT #1 and #2
+// Change order by name (Alphabetically) or
+// by amount (The most common name first).
+// Element #orderBy has onchange event listening for changeOrder function.
+// Functions parameter input gets value of #orderBy element.
+// Insert data to page as a list using <li> tag.
 function changeOrder(input) {
   getNameList(function(data){
     var value = input.value;
@@ -58,38 +76,38 @@ function changeOrder(input) {
     for (var i = 0; i < data['names'].length; i++) {
       namesArray.push([data['names'][i]['name'], data['names'][i]['amount']]);
     }
-
+    // Check user input from sort input
+    // Values are "Amount", "Alphabeth" and "Default".
     if (value == "Amount") {
-      // Sort biggest value first.
+      // Sort biggest value first using build in sort function.
       var sortOrder = namesArray.slice().sort(function(a, b) {
         return b[1] - a[1];
       });
-
       for (var i = 0; i < sortOrder.length; i++) {
-        document.getElementById('list').innerHTML += "<li>" + sortOrder[i][1] + ": " +
-        sortOrder[i][0] + "</li>";
+        addToMainList(sortOrder,i,[0],[1]);
       }
-
     } else if (value == "Alphabet") {
       // Sort Alphabetically.
       var sortOrder = namesArray.sort();
       for (var i = 0; i < sortOrder.length; i++) {
-        document.getElementById('list').innerHTML += "<li>" + sortOrder[i][0] + ": " +
-        sortOrder[i][1] + "</li>";
+        addToMainList(sortOrder,i,[1],[0]);
       }
-
-    } else {
-      // Default array
+    } else if (value == "Default") {
+      // Default order if input is neither of two past values.
       for (var i = 0; i < namesArray.length; i++) {
-        document.getElementById('list').innerHTML += "<li>" + namesArray[i][0] + ": " +
-        namesArray[i][1] + "</li>";
+        addToMainList(namesArray,i,[1],[0]);
       }
-
     }
   });
 };
 
-// Count all names and how many different names there is.
+// REQUIREMENT #3
+// Count all names and how many different names there is and show the result
+// at the bottom of the page.
+// TotalNames variable to sumup all the names.
+// Create an array to insert name and amount under that certain name.
+// Loop through the names and insert data to namesArray.
+// Finally, insert values to elements
 getNameList(function(data){
   var totalNames = 0;
   var namesArray = [];
@@ -97,7 +115,6 @@ getNameList(function(data){
     namesArray.push([data['names'][i]['name'],data['names'][i]['amount']]);
     var totalNames = totalNames + namesArray[i][1];
   }
-  // Insert values to elements
-  document.getElementById('totalNames').innerHTML = "Total names: <strong>" + totalNames + "</strong>";
+  document.getElementById('totalNames').innerHTML = "Total Employees: <strong>" + totalNames + "</strong>";
   document.getElementById('differentNames').innerHTML = "Different names: <strong>" + namesArray.length + "</strong>";
 });
