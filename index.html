@@ -24,6 +24,7 @@ And most important, have fun! -->
     <div class="main">
       <h1>Work Group App <span>| SDA2021</span></h1>
       <hr style="margin-bottom: 15px;">
+      <!-- Search for names. Part of REQUIREMENT #4 -->
       <div>
         <label for="find_name">Search</label>
         <br>
@@ -32,17 +33,19 @@ And most important, have fun! -->
       <div class="chooseOrder">
         <label for="sort">Order by</label>
         <br>
+        <!-- Change order of the names. Part of REQUIREMENT #1 and #2 -->
         <select name="sort" id="listOrder" onchange="changeOrder(this)">
           <option value="Amount">Most popular first</option>
           <option value="Alphabet">Alphabetical order</option>
           <option value="Default">Default</option>
         </select>
       </div>
-      <!-- This is where the list of names is displayed -->
+      <!-- This is where the names are displayed. -->
       <ul id="list"></ul>
-      <!-- Display total amount of names -->
-      <p id="totalNames">Total Employees: </p>
-      <p id="differentNames">Different names: </p>
+      <!-- Display total employee count and how many different names there is.
+      Part of REQUIREMENT #3 -->
+      <p id="totalNames">Total Dude Count: </p>
+      <p id="differentNames">Different Orthonyms: </p>
       <p id="contact"><a href="mailto:johannesmensalo@gmail.com?subject=NameApp">Developer Johannes Mensalo</a>
       </p>
     </div>
