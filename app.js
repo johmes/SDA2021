@@ -16,7 +16,7 @@ function getNameList(callback) {
   });
 }
 // Function where we add the data to HTML element and return it.
-// Function parameters are for wanted array and different index values.
+// Parameters are for wanted array and different index values.
 function addToMainList(array,i,i2,i3) {
   return document.getElementById('list').innerHTML += "<li>" + array[i][i3] + ": " +
   array[i][i2] + "</li>";
