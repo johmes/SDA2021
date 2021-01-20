@@ -115,6 +115,6 @@ getNameList(function(data){
     namesArray.push([data['names'][i]['name'],data['names'][i]['amount']]);
     var totalNames = totalNames + namesArray[i][1];
   }
-  document.getElementById('totalNames').innerHTML = "Total Employees: <strong>" + totalNames + "</strong>";
-  document.getElementById('differentNames').innerHTML = "Different names: <strong>" + namesArray.length + "</strong>";
+  document.getElementById('totalNames').innerHTML = "Total Dude Count: <strong>" + totalNames + "</strong>";
+  document.getElementById('differentNames').innerHTML = "Different Orthonyms: <strong>" + namesArray.length + "</strong>";
 });
