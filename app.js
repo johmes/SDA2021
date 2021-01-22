@@ -7,18 +7,23 @@
 // Please check README for complete assignment.
 // And most important, have fun!
 
-
-
+// Define the variable for #list element.
+const mainList = document.getElementById('list');
 // Get names.json file from url using jQuery function getJSON.
+// Also check if there was an error loading json file and show a notification
+// if needed.
 function getNameList(callback) {
-  $.getJSON('https://raw.githubusercontent.com/solita/dev-academy-2021/main/names.json', function (json) {
+  $.getJSON('https://raw.githubusercontent.com/solita/dev-academy-2021/main/nsames.json', function (json) {
       callback(json);
+  }).fail(function() {
+    return mainList.innerHTML = "<h3 style='text-align: center; margin-top: 10px;'>Something went wrong :(</h3><br>";
   });
 }
+
 // Function where we add the data to HTML element and return it.
 // Parameters are for wanted array and different index values.
 function addToMainList(array,i,i2,i3) {
-  return document.getElementById('list').innerHTML += "<li>" + array[i][i3] + ": " +
+  return mainList.innerHTML += "<li>" + array[i][i3] + ": " +
   array[i][i2] + "</li>";
 }
 
@@ -33,7 +38,7 @@ getNameList(function(data) {
   // is fully written in the search bar. Using keyup event listener to detect user input.
   var findName = document.getElementById("find_name");
   findName.addEventListener("keyup", function() {
-    document.getElementById('list').innerHTML = '';
+    mainList.innerHTML = '';
     var search = findName.value;
     var searchToUpperCase = search.charAt(0).toUpperCase() + search.slice(1);
 
@@ -50,7 +55,7 @@ getNameList(function(data) {
       } else {
         // Insert result to name list
         if (onlyName.indexOf(searchToUpperCase) == -1) {
-          document.getElementById('list').innerHTML = "<h3 style='text-align: center; margin-top: 10px;'>Sorry, we could not find this guy! </h3><br>";
+          mainList.innerHTML = "<h3 style='text-align: center; margin-top: 10px;'>Sorry, we could not find this guy! </h3><br>";
         } else {
           const indexOfSearch = onlyName.indexOf(searchToUpperCase);
           addToMainList(data['names'],indexOfSearch,['amount'],['name']);
@@ -71,7 +76,7 @@ function changeOrder(input) {
     var value = input.value;
     var namesArray = [];
     // Clear list element every time before function is called.
-    document.getElementById('list').innerHTML = "";
+    mainList.innerHTML = "";
     // Create array for name and its amount.
     for (var i = 0; i < data['names'].length; i++) {
       namesArray.push([data['names'][i]['name'], data['names'][i]['amount']]);
