@@ -17,7 +17,7 @@ function getNameList(callback) {
   $.getJSON('https://raw.githubusercontent.com/solita/dev-academy-2021/main/names.json', function (json) {
       callback(json);
   }).fail(function() {
-    return document.getElementById('list').innerHTML = "<h3 style='text-align: center; margin-top: 10px;'>Something went wrong :(</h3><br>";
+    return document.getElementById('list').innerHTML = "<h3 class='warning'>Something went wrong :(</h3><br>";
   });
 }
 
@@ -30,14 +30,19 @@ function addToMainList(array,i,i2,i3) {
 
 // Show this in list as a default when page is loaded.
 getNameList(function(data) {
-  // Check if data['names'] has anything in it.
-  if (data['names'].length != 0) {
-    for (var i = 0; i < data['names'].length; i++) {
-      addToMainList(data['names'],i,['amount'],['name']);
+  // Check if data['names'] exist and has anything in it.
+  if (data.hasOwnProperty('names')) {
+    if (data['names'].length != 0) {
+      for (var i = 0; i < data['names'].length; i++) {
+        addToMainList(data['names'],i,['amount'],['name']);
+      }
+    } else {
+      return document.getElementById('list').innerHTML = "<h3 class='warning'>It's empty here!</h3><br>";
     }
   } else {
-    return document.getElementById('list').innerHTML = "<h3 style='text-align: center; margin-top: 10px;'>It's empty here!</h3><br>";
+    return document.getElementById('list').innerHTML = '<h3 class="warning">Something went wrong :(</h3><p class="warning">No property named "names"</p>';
   }
+
 
   // REQUIREMENT #4
   // Execute real time search function. For now it only shows result when the name
@@ -47,31 +52,35 @@ getNameList(function(data) {
     document.getElementById('list').innerHTML = '';
     var search = findName.value;
     var searchToUpperCase = search.charAt(0).toUpperCase() + search.slice(1);
-    // Check if data['names'] has anything in it.
-    if (data['names'].length != 0) {
-      for (var i = 0; i < data['names'].length; i++) {
-        var onlyName = [];
+    // Check if data['names'] exist and has anything in it.
+    if (data.hasOwnProperty('names')) {
+      if (data['names'].length != 0) {
         for (var i = 0; i < data['names'].length; i++) {
-          onlyName.push(data['names'][i]['name']);
-        }
-        // Check if search bar is empty
-        if (searchToUpperCase == '') {
+          var onlyName = [];
           for (var i = 0; i < data['names'].length; i++) {
-            addToMainList(data['names'],i,['amount'],['name']);
+            onlyName.push(data['names'][i]['name']);
           }
-        } else {
-          // Insert result to name list
-          if (onlyName.indexOf(searchToUpperCase) == -1) {
-            document.getElementById('list').innerHTML = "<h3 style='text-align: center; margin-top: 10px;'>Sorry, we could not find this guy! </h3><br>";
+          // Check if search bar is empty
+          if (searchToUpperCase == '') {
+            for (var i = 0; i < data['names'].length; i++) {
+              addToMainList(data['names'],i,['amount'],['name']);
+            }
           } else {
-            const indexOfSearch = onlyName.indexOf(searchToUpperCase);
-            addToMainList(data['names'],indexOfSearch,['amount'],['name']);
+            // Insert result to name list
+            if (onlyName.indexOf(searchToUpperCase) == -1) {
+              document.getElementById('list').innerHTML = "<h3 class='warning'>Sorry, we could not find this guy! </h3><br>";
+            } else {
+              const indexOfSearch = onlyName.indexOf(searchToUpperCase);
+              addToMainList(data['names'],indexOfSearch,['amount'],['name']);
+            }
           }
         }
-      }
+       } else {
+         return document.getElementById('list').innerHTML = "<h3 class='warning'>It's empty here!</h3><br>";
+       }
      } else {
-       return document.getElementById('list').innerHTML = "<h3 style='text-align: center; margin-top: 10px;'>It's empty here!</h3><br>";
-     }
+        return document.getElementById('list').innerHTML = '<h3 class="warning">Something went wrong :(</h3><p class="warning">No property named "names"</p>';
+      }
   });
 });
 
@@ -85,40 +94,42 @@ function changeOrder(input) {
   getNameList(function(data){
     var value = input.value;
     var namesArray = [];
-
-    // Check if data['names'] has anything in it.
-    if (data['names'].length != 0) {
-      // Clear list element every time before function is called.
-      document.getElementById('list').innerHTML = "";
-      // Create array for name and its amount.
-      for (var i = 0; i < data['names'].length; i++) {
-        namesArray.push([data['names'][i]['name'], data['names'][i]['amount']]);
-      }
-      // Check user input from sort input
-      // Values are "Amount", "Alphabeth" and "Default".
-      if (value == "Amount") {
-        // Sort biggest value first using build in sort function.
-        var sortOrder = namesArray.slice().sort(function(a, b) {
-          return b[1] - a[1];
-        });
-        for (var i = 0; i < sortOrder.length; i++) {
-          addToMainList(sortOrder,i,[0],[1]);
+    if(data.hasOwnProperty('names')) {
+      if (data['names'].length != 0) {
+        // Clear list element every time before function is called.
+        document.getElementById('list').innerHTML = "";
+        // Create array for name and its amount.
+        for (var i = 0; i < data['names'].length; i++) {
+          namesArray.push([data['names'][i]['name'], data['names'][i]['amount']]);
         }
-      } else if (value == "Alphabet") {
-        // Sort Alphabetically.
-        var sortOrder = namesArray.sort();
-        for (var i = 0; i < sortOrder.length; i++) {
-          addToMainList(sortOrder,i,[1],[0]);
+        // Check user input from sort input
+        // Values are "Amount", "Alphabeth" and "Default".
+        if (value == "Amount") {
+          // Sort biggest value first using build in sort function.
+          var sortOrder = namesArray.slice().sort(function(a, b) {
+            return b[1] - a[1];
+          });
+          for (var i = 0; i < sortOrder.length; i++) {
+            addToMainList(sortOrder,i,[0],[1]);
+          }
+        } else if (value == "Alphabet") {
+          // Sort Alphabetically.
+          var sortOrder = namesArray.sort();
+          for (var i = 0; i < sortOrder.length; i++) {
+            addToMainList(sortOrder,i,[1],[0]);
+          }
+        } else if (value == "Default") {
+          // Default order if input is neither of two past values.
+          for (var i = 0; i < namesArray.length; i++) {
+            addToMainList(namesArray,i,[1],[0]);
+          }
         }
-      } else if (value == "Default") {
-        // Default order if input is neither of two past values.
-        for (var i = 0; i < namesArray.length; i++) {
-          addToMainList(namesArray,i,[1],[0]);
-        }
-      }
+       } else {
+         return document.getElementById('list').innerHTML = "<h3 class='warning'>It's empty here!</h3><br>";
+       }
      } else {
-       return document.getElementById('list').innerHTML = "<h3 style='text-align: center; margin-top: 10px;'>It's empty here!</h3><br>";
-     }
+        return document.getElementById('list').innerHTML = '<h3 class="warning">Something went wrong :(</h3><p class="warning">No property named "names"</p>';
+      }
   });
 };
 
