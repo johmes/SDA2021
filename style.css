@@ -68,6 +68,10 @@ input, #listOrder:focus {
 #contact a {
   text-decoration: none;
 }
+.warning {
+  text-align: center;
+  margin-top: 10px;
+}
 @media only screen and (max-width: 678px) {
   .main #list {
     width: auto;
